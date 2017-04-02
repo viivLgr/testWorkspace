@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+.mask{
+	width: 200px;
+	height: 100px;
+	box-sizing: border-box;
+	border: 1px solid #aaa;
+}
+/* 去掉元素原有的边框 */
+.retina-border {
+	position: relative;
+	border: none;
+}
+/* 通过设置伪元素放大到2倍的宽高，设置1px边框，再缩小1倍，以达到0.5px边框的效果*/
+.retina-border:after {
+	content: '';
+	display: block;
+	width: 200%;
+	height: 200%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	border: 0px solid #aaa;
+	-webkit-transform-origin: left top;
+	transform-origin: left top;
+	-webkit-transform: scale(.5);
+	transform: scale(.5);
+}
+
+.rt-bd-all:after {
+	border-width: 2px;
+}
+.ellipsis{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ellipsis-2{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	/*display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	overflow: hidden;*/
+}
+	</style>
+</head>
+<body>
+<div class="mask retina-border rt-bd-all ellipsis-2">
+	盛世嫡妃 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.	
+</div>
+</body>
+</html>

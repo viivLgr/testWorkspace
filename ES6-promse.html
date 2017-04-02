@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+// var p = new Promise(function(resolve,reject){
+// 	setTimeout(function(){
+// 		console.log('执行完成');
+// 		resolve('whatever');
+// 	},2000)
+// })
+function runAsync1(){
+	var p = new Promise(function(resolve,reject){
+		setTimeout(function(){
+			console.log('执行完成1');
+			resolve('lalala1');
+		},3000)
+	})
+	return p;
+}
+function runAsync2(){
+	var p = new Promise(function(resolve,reject){
+		setTimeout(function(){
+			console.log('执行完成2');
+			resolve('lalala2');
+		},2000)
+	})
+	return p;
+}
+function runAsync3(){
+	var p = new Promise(function(resolve,reject){
+		setTimeout(function(){
+			console.log('执行完成3');
+			resolve('lalala3');
+		},1000)
+	})
+	return p;
+}
+// runAsync1().then(function(data){
+// 	console.log(data);
+// 	return runAsync2();
+// }).then(function(data){
+// 	console.log(data);
+// 	return runAsync3();
+// }).then(function(data){
+// 	console.log(data);
+// });
+// runAsync1().then(function(data){
+// 	console.log(data);
+// 	return 'return1llll';
+// }).then(function(data){
+// 	console.log(data);
+// })
+function getNumber(){
+	var p = new Promise(function(resolve,reject){
+		setTimeout(function(){
+			var num = Math.ceil(Math.random()*10);
+			if(num < 5){
+				resolve(num+'<5');
+			}else{
+				reject(num+'>=5');
+			}
+		})
+	});
+	return p;
+}
+// getNumber().then(function(data){
+// 	console.log(data);
+// },function(reason,data){
+// 	console.log(reason);
+// })
+// getNumber().then(function(data){
+// 	console.log('resolve');
+// 	console.log(data);
+// 	console.log(somedata);
+// }).catch(function(reason){
+// 	console.log('reject');
+// 	console.log(reason);
+// })
+// Promise.all([runAsync1(),runAsync2(),runAsync3()])
+// .then(function(result){
+// 	console.log(result)
+// });
+// Promise.race([runAsync1(),runAsync2(),runAsync3()])
+// .then(function(result){
+// 	console.log(result);
+// })
+
+function requestImg(){
+	var p = new Promise(function(resolve,reject){
+		var img = new Image();
+		img.onload = function(){
+			resolve(img);
+		}
+		img.src = 'xxxx';
+	})
+	return p;
+}
+function timeOut(){
+	var p = new Promise(function(resolve,reject){
+		setTimeout(function(){
+			reject('图片请求超时');
+		},5000);
+	})
+	return p;
+}
+Promise.race([requestImg(),timeOut()])
+.then(function(result){
+	console.log(result);
+})
+.catch(function(reason){
+	console.log(reason);
+})
+</script>
+</body>
+</html>

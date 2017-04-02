@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<button id="btn">按钮</button>
+<script type="text/javascript">
+'use strict';
+(function(){
+	//数组去重
+	function arrayRemoval(arr){
+		var newArr = [];
+		arr.map(function(item,index,arr){
+			 if(arr.indexOf(item,index+1) == -1){
+			 	newArr.push(item);
+			 	console.log(newArr);
+			 }
+		})
+		return newArr;
+	}
+	function _trim(str){
+		return str.replace(/^\s*|\s*$/g,'')
+
+	}
+	window.arrayRemoval = arrayRemoval;
+	window._trim = _trim;
+})()
+var arr = [1,2,3,4,2];
+console.log(arrayRemoval(arr));
+var str = '    dff   ';
+console.log(_trim(str));
+//柯里化
+var currying = function(fn) {
+    var args = [].slice.call(arguments, 1);
+
+    return function() {
+        // 主要还是收集所有需要的参数到一个数组中，便于统一计算
+        var _args = args.concat([].slice.call(arguments));
+        return fn.apply(null, _args);
+    }
+}
+
+var sum = currying(function() {
+    var args = [].slice.call(arguments);
+    return args.reduce(function(a, b) {
+        return a + b;
+    })
+},10)
+
+console.log(sum(20, 10));  // 40
+console.log(sum(10, 5));   // 25
+
+var obj = {
+	name: 'viiv',
+	age: 14,
+	getName: function(){
+		return this.name;
+	}
+}
+console.log(obj.getName());
+['name','age'].forEach(function(item){
+	console.log(obj[item]);
+})
+function Person(name,age){
+	var o = new Object();
+	o.name = name;
+	o.age = age;
+	o.sayName = function(){
+		return this.name;
+	}
+	return o;
+}
+function Person2(name,age){
+	this.name = name;
+	this.age = age;
+	this.sayName = function(){
+		return this.name;
+	}
+}
+function New(func){
+	var res = {}; //函数最终返回的实例对象
+	if(func.prototype !== null){
+		//将实例的原型指向构造函数的原型
+		res.__proto__ = func.prototype;
+	}
+	//ret为最终执行的结果 通过apply将this指向最终返回的实例
+	var ret = func.apply(res,Array.prototype.slice.call(arguments,1));
+	//如果在构造函数中明确指定了返回对象，那么new的执行结果就是返回该返回对象
+	if((typeof ret === 'object' || typeof ret === 'function') && ret !==null){
+		return ret;
+	}
+	//如果没有明确指明返回对象，则返回res实例对象。
+	return res;
+}
+var p1 = New(Person2,'viiv_lgr',10);
+console.log(p1.sayName());
+console.log(p1 instanceof Person2);
+var btn = document.getElementById('btn');
+btn.addEventListener('click',function(){
+	console.log('click me');
+},false);
+
+</script>
+</body>
+</html>

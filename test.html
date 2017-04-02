@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+
+	// for(var i = 0; i<5;i++){
+	// 	setInterval(function(){
+	// 		console.log(new Date(),i)
+	// 	},1000);
+	// }
+	//console.log(new Date(),i);
+	for(var i = 0; i < 5; i++){
+		(function(j){
+			setInterval(function(){
+				//console.log(new Date,i,",");
+			},1000)
+		})(i)
+		console.log("neibu"+new Date,i)
+	}
+	console.log("waibu"+new Date,i,"->");
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+    document.getElementsByTagName('a')[0].onclick=function(){
+        //1.创建XMLHttpRequest对象
+        if (window.XMLHttpRequest){
+            var xmlhttp=new XMLHttpRequest();
+        }else{
+            var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); //ie5、ie6
+        }
+        //2.规定请求的类型、URL 以及是否异步处理请求。
+        var method='GET';
+        //使用post的场景
+        // 无法使用缓存文件（更新服务器上的文件或数据库）
+        // 向服务器发送大量数据（POST 没有数据量限制）
+        // 发送包含未知字符的用户输入时，POST 比 GET 更稳定也更可靠
+        var url=this.href;
+        xmlhttp.open(method,url);
+        xmlhttp.send();
+        xmlhttp.onreadystatechange=function(){
+            if(xmlhttp.readyState==4){
+                if(xmlhttp.status==200||xmlhttp.status==304){
+                    var txt=xmlhttp.responseText;
+                    var json=eval('('+txt+')');
+                    document.getElementById('name').innerHTML='姓名'+json.ruei.name;
+                    document.getElementById('age').innerHTML='年龄'+json.ruei.age;
+                    document.getElementById('job').innerHTML='工作'+json.ruei.job;
+                }
+            }
+        }
+        return false;
+    }
+} 
+https://github.com/es-shims/es5-shim
+https://github.com/ea-shims/es6-shim
+https://polyfill.io/
+</script>
+</body>
+</html>

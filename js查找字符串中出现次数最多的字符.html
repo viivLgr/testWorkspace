@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	var str = 'aaabbedssqq';
+	var obj = [];
+	for(var i = 0; i<str.length;i++){
+		var v = str.charAt(i);
+		if(obj[v] && obj[v].value == v){
+			obj[v].count++;
+		}else{
+			obj[v] = {};
+			obj[v].count = 1;
+			obj[v].value = v;
+		}
+	}
+	for(key in obj){
+		document.write(obj[key].value + ':' +obj[key].count+'<br/>');
+	}
+	console.log(obj);
+	console.log(obj.length);
+
+	// function quickSort(arr){
+	// 	var num = Math.floor(arr.length / 2);
+	// 	var numValue = arr[num].count;
+	// 	var left = [],right = [];
+	// 	for(var i = 0; i < arr.length; i++){
+	// 		if(arr[i].count < numValue){
+	// 			left.push(arr[i]);
+	// 		}
+	// 		if(arr[i].count > numValue){
+	// 			right.push(arr[i]);
+	// 		}
+	// 	}
+	// 	return quickSort(left).concat(arr[num],quickSort(right));
+	// }
+	// quickSort(obj);
+
+	// var str = 'aaabbedssqq';
+	// var o = {};
+	// for(var i = 0; i< str.length;i++){
+	// 	var char = str.charAt[i];
+	// 	if(o[char]){
+	// 		o[char]++;
+	// 	}else{
+	// 		o[char] = 1;
+	// 	}
+	// }
+	// console.log(o);
+	//判断一个字符串在另一个字符串中出现了几次
+	function countInstance(mainStr,subStr){
+		var count = 0;
+		var offset = 0;
+		do{
+			offset = mainStr.indexOf(subStr,offset);
+			if(offset != -1){
+				count++;
+				offset += subStr.length;
+			}
+		}while(offset != -1);
+
+		return count;
+	}
+	var str1 = 'abcabcwqe';
+	var str2 = 'ab';
+	console.log(countInstance(str1,str2));
+</script>
+</body>
+</html>

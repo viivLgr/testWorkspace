@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.container{padding: 500px 0; background-color: pink;}
+		#todo > li > input{display: none;}
+		#todo > li > input:checked + label{background-color: #000; color: #fff;}
+		#traffic > li{ float: left; margin: 0 10px; width: 50px; height: 50px; border-radius: 50%; background-color: gray;list-style: none;}
+		#traffic.stop > li:nth-child(1){ background-color: red; }
+		#traffic.move > li:nth-child(2){ background-color: green; }
+		#traffic.wait > li:nth-child(3){ background-color: yellow; }
+	</style>
+</head>
+<body>
+<div class="container" id="container">
+	<ul id="todo">
+		<li><input type="radio" name="item" value="item1" id="item1"><label for="item1">item1</label></li>
+		<li><input type="radio" name="item" value="item2" id="item2"><label for="item2">item2</label></li>
+		<li><input type="radio" name="item" value="item3" id="item3"><label for="item3">item3</label></li>
+		<li><input type="radio" name="item" value="item4" id="item4"><label for="item4">item4</label></li>
+	</ul>
+	<ul id="todo-list">
+		<li class="item">item1</li>
+		<li class="item">item2</li>
+		<li class="item">item3</li>
+		<li class="item">item4</li>
+	</ul>
+	<ul id="traffic">
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+<script type="text/javascript">
+//1.
+// document.addEventListener('DOMContentLoaded',function(){
+// 	let app = document.getElementById('todo-list');
+// 	let items = document.getElementsByClassName('item');
+// 	for(let item of items){
+// 		item.addEventListener('click',function(){
+// 			console.log('you click on '+item.innerHTML);
+// 		},false);
+// 	}
+// },false);
+
+//2.
+// document.addEventListener('DOMContentLoaded',function(){
+// 	let app = document.getElementById('todo-list');
+// 	app.addEventListener('click',function(e){
+// 		if(e.target && e.target.nodeName === 'LI'){
+// 			let item = e.target;
+// 			console.log('you click on '+item.innerHTML);
+// 		}
+// 	},false)
+// });
+//3.
+var list = document.querySelector('#todo');
+var listItems = document.querySelectorAll('#todo > li');
+list.addEventListener('click',function(e){
+	if(e.target && e.target.tagName === 'LI'){
+		console.log(e.target.innerHTML);
+	}
+},false);
+
+//模仿红绿灯
+// 1.
+// var traffic = document.querySelector('#traffic');
+// (function reset(){
+// 	traffic.className = 'wait';
+// 	setTimeout(function(){
+// 		traffic.className = 'stop';
+// 		setTimeout(function(){
+// 			traffic.className = 'move';
+// 			setTimeout(reset,2000)
+// 		},2000)
+// 	},2000)
+// })();
+// 2.
+// var traffic = document.querySelector('#traffic');
+// (function(){
+// 	var statesList = ['wait','move','stop'];
+// 	var currentIndex = 0;
+// 	traffic.className = statesList[2];
+// 	setInterval(function(){
+// 		var state = statesList[currentIndex];
+// 		traffic.className = state;
+// 		currentIndex = (currentIndex + 1) % statesList.length;
+// 	},2000)
+// })()
+
+//3.
+function trafficStart(elem,statesList,delay){
+	var currentIndex = 0;
+	elem.className = statesList[statesList.length - 1];
+	setInterval(function(){
+		elem.className = statesList[currentIndex];
+		currentIndex = (currentIndex + 1) % statesList.length;
+	},delay);
+}
+var traffic = document.querySelector('#traffic');
+var statesList = ['wait','move','stop'];
+trafficStart(traffic,statesList,1000);
+
+// var arr = [1,2,3,4];
+// for(var i = 0; i < arr.length; i++){
+// 	(function(i_lo){
+// 		setTimeout(function(){
+// 			console.log(i_lo)
+// 		},3000);
+// 	})(i);
+// }
+function debounce(fn, delay) {
+  // 维护一个 timer
+  let timer = null;
+  // 能访问 timer 的闭包
+  return function() {
+    // 通过 ‘this’ 和 ‘arguments’ 获取函数的作用域和变量
+    let context = this;
+    let args = arguments;
+    // 如果事件被调用，清除 timer 然后重新设置 timer
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      fn.apply(context, args);
+    }, delay);
+  }
+}
+
+function dobunce2(fn,delay){
+	let timer = null;
+	return function(){
+		let content = this;
+		let args = arguments;
+		clearTimeout(timer);
+		timer = setTimeout(function(){
+			fn.apply(content,args);
+		},delay);
+	}
+}
+function cons(){
+	console.log('scrolling');
+}
+let elem = document.getElementById('container');
+elem.addEventListener('scroll',dobunce2(cons,2000),false);
+
+</script>
+</body>
+</html>

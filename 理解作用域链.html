@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body><ul class="ul"><li>item</li><li>item</li><li>item</li></ul></body>
+<script type="text/javascript">
+// document.querySelector('#one input').onkeydown = function() {   
+//   document.querySelector('#one span').innerHTML = this.value;   
+// };   
+// document.querySelector('#second input').onkeydown = function() {  
+// 	var that = this; 
+//   setTimeout(function() {   
+//     //document.querySelector('#second span').innerHTML = document.querySelector('#seond input').value;   }, 0);
+//     document.querySelector('#second span').innerHTML = that.value;   
+//   }, 0);
+var listNode = document.getElementsByTagName('ul')[0];
+var listClone = listNode.cloneNode(true);
+var list2Array = [].slice.call(listClone.childNodes,0);
+listNode.appendChild(listClone);
+
+listNode.insertBefore(listClone,listNode.firstChild);
+//listNode.insertBefore(listClone,null);
+//listNode.replaceChild(listClone,listNode.firstChild);
+//listNode.removeChild(listNode.firstChild);
+console.log(listNode.parentNode);
+console.log(listNode.firstChild.previousSibling);
+console.log(listNode.firstChild.nextSibling);
+console.log(listNode);
+var date = new Date(1992,4,0,14,3,4);
+var getDate = date.getDate();
+var getMonth = date.getMonth() + 1;
+var getYear = date.getFullYear();
+var getHours = date.getHours() < 10 ? ('0' + date.getHours()) : date.getHours();
+var getMinutes = date.getMinutes() < 10 ? ('0'+date.getMinutes()) : date.getMinutes();
+var getSeconds = date.getSeconds() < 10 ? ('0'+date.getSeconds()) : date.getSeconds();
+console.log(date);
+console.log(getDate);
+console.log(getMonth);
+console.log(getYear);
+console.log(getHours+':'+getMinutes+':'+getSeconds);
+var days = new Date(1992,4,0,12,3,4);
+console.log(days.toString());
+console.log(days.getFullYear()+'年'+(days.getMonth()+1)+'月有'+days.getDate()+'天。')
+// function f1(){
+// 　　　　var n=999;
+// 　　　　function f2(){
+//          console.log(n); 
+// 　　　　}
+// 　　　　return f2;
+// 　　}
+// 　　var result=f1();
+// 　　result(); // 999
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

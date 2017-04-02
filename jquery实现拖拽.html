@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		div{width: 100px; height: 100px; background: pink;cursor: move;}
+	</style>
+</head>
+<body>
+<div id="target">seek</div>
+<div id="target1">viiv</div>
+<script type="text/javascript">
+;(function(){
+	function getTransform(){
+		var transform = '';
+		var transformArr = ['transform','oTransform','webkitTransform','mozTransform','msTransform'];
+		var divStyle = document.createElement('div').style;
+		for(var i = 0;i < transformArr.length;i++){
+			if(transformArr[i] in divStyle){
+				return transform = transformArr[i];
+			}
+		}
+		return transform;
+	}
+	var transform = getTransform();
+	function Drag(selector){
+		this.elem = typeof selector == 'Object' ? selector : document.getElementById(selector);
+		this.startX = 0;
+		this.startY = 0;
+		this.sourceX = 0;
+		this.sourceY = 0;
+
+		this.init();
+	}
+	Drag.prototype = {
+		constructor: Drag,
+		init: function(){
+			this.setDrag();
+		},
+		getStyle: function(property){
+			return document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(this.elem,null)[property] : this.elem.currentStyle(property);
+		},
+		//为了得到当前移动位置的position
+		getPosition: function(){
+			var pos = {x: 0,y: 0};
+			if(transform){
+				var transformValue = this.getStyle(transform);
+				if(transformValue == 'none'){
+					this.elem.style[transform] = 'translate(0,0)';
+				}else{
+					var temp = transformValue.match(/-?\d+/g);
+					pos = {
+						x: parseInt(temp[4].trim()),
+						y: parseInt(temp[5].trim())
+					}
+				}
+			}else{
+				if(this.getStyle('position') == 'static'){
+					this.elem.style.position = 'relative';
+				}else{
+					var left = parseInt(this.getStyle('left'));
+					var top = parseInt(this.getStyle('top'));
+					pos = {
+						x: left ? left : 0,
+						y: top ? top : 0
+					}
+				}
+			}
+			return pos;
+		},
+		setTargetPos: function(pos){
+			if(transform){
+				this.elem.style[transform] = 'translate('+pos.x+'px,'+pos.y+'px)';
+			}else{
+				this.elem.style.left = pos.x + 'px';
+				this.elem.style.top = pos.y + 'px';
+			}
+		},
+		setDrag: function(){
+			var self = this;
+			self.elem.addEventListener('mousedown',start,false);
+			function start(even){
+				//获取开始时的坐标
+				self.startX = even.pageX;
+				self.startY = even.pageY;
+
+				var pos = self.getPosition();
+
+				self.sourceX = pos.x;
+				self.sourceY = pos.y;
+				console.log(pos);
+				document.addEventListener('mousemove',move,false);
+				document.addEventListener('mouseup',end,false);
+			}
+			function move(even){
+				var currentX = even.pageX;
+				var currentY = even.pageY;
+
+				var distanceX = currentX - self.startX;
+				var distanceY = currentY - self.startY;
+
+				self.setTargetPos({
+					x: (self.sourceX + distanceX).toFixed(),
+					y: (self.sourceY + distanceY).toFixed()
+				});
+			}
+			function end(){
+				document.removeEventListener('mousemove',move,false);
+				document.removeEventListener('mouseup',end,false);
+			}
+		}
+	}
+	window.Drag = Drag;
+})();
+new Drag('target')
+</script>
+</body>
+</html>

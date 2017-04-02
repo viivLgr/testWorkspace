@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		div{width: 100px; height: 100px; background: pink;cursor: move;}
+	</style>
+</head>
+<body>
+<div id="target">seek</div>
+<div id="target1">viiv</div>
+<script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+<script type="text/javascript">
+;(function(){ //生成自执行函数
+	var transform = getTransform();  //兼容transform
+	function getTransform(){
+		var transformStr = '';
+		var divStyle = document.createElement('div').style;
+		var transformArr = ['transform','webkitTransform','mozTransform','oTransform','msTransform'];
+		for(var i = 0; i < transformArr.length;i++){
+			if(transformArr[i] in divStyle){
+				transformStr = transformArr[i];
+			}
+		}
+		return transformStr;
+	}
+
+	function Drag(selector){
+		this.elem = typeof selector == 'Object' ? selector : document.getElementById(selector);
+		this.startX = 0;
+		this.startY = 0;
+		this.sourceX = 0;
+		this.sourceY = 0;
+		this.init();
+	}
+	Drag.prototype = {
+		constructor: Drag,
+		init: function(){
+			this.setDrag();
+		},
+		getStyle: function(property){
+			return document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(this.elem,null)[property] : this.elem.currentStyle(property);
+		},
+		getPosition: function(){
+			var pos = {x: 0, y: 0};
+			if(transform){
+				var transformValue = this.getStyle(transform);
+				if(transformValue == 'none'){
+					this.elem.style[transform] = 'translate(0,0)';
+				}else{
+					var temp = transformValue.match(/-?\d+/g);
+					pos = {
+						x: parseInt(temp[4].trim()),
+						y: parseInt(temp[5].trim())
+					}
+				}
+			}else{
+				if(this.getStyle('position') == 'static'){
+					this.elem.style.position = 'relative';
+				}else{
+					pos = {
+						x: parseInt(this.getStyle('left')) ? parseInt(this.getStyle('left')) : 0,
+						y: parseInt(this.getStyle('top')) ? parseInt(this.getStyle('top')) : 0
+					}
+				}
+			}
+			return pos;
+		},
+		setPosition: function(pos){
+			if(transform){
+				this.elem.style[transform] = 'translate('+pos.x+'px,'+pos.y+'px)';
+			}else{
+				this.elem.style['left'] = pos.x + 'px';
+				this.elem.style['top'] = pos.y + 'px';
+			}
+		},
+		setDrag: function(){
+			var self = this;
+			self.elem.addEventListener('mousedown',start,false);
+			function start(event){
+				self.startX = event.pageX;
+				self.startY = event.pageY;
+
+				var pos = self.getPosition();
+
+				self.sourceX = pos.x;
+				self.sourceY = pos.y;
+				console.log(pos);
+				document.addEventListener('mousemove',move,false);
+				document.addEventListener('mouseup',end,false);
+			}
+			function move(event){
+				var currentX = event.pageX;
+				var currentY = event.pageY;
+
+				var distanceX = currentX - self.startX;
+				var distanceY = currentY - self.startY;
+
+				self.setPosition({
+					x: (distanceX + self.sourceX).toFixed(),
+					y: (distanceY + self.sourceY).toFixed()
+				});
+			}
+			function end(){
+				document.removeEventListener('mousemove',move,false);
+				document.removeEventListener('mouseup',end,false);
+			}
+		}
+	}
+	window.Drag = Drag;
+})()
+
+new Drag('target');
+
+//封装jQuery方法
+;(function($){
+	$.fn.extend({
+		becomeDrag: function(){
+			new Drag(this[0]);
+			return this;   //为了保证jQuery所有方法都能链式调用，所以每个方法的最后都要返回this，即jQuery对象
+		}
+	});
+})(jQuery);
+
+
+</script>
+<script type="text/javascript">
+$(function(){
+	console.log(11)
+	console.log($('#target1').height());
+	$('#target').becomeDrag();
+})
+</script>
+</body>
+</html>

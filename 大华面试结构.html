@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.wrap{ width: 120px;overflow: hidden;position: relative;}
+		.wrap .left{float: left;width: 50px; height: 120px; border:1px solid #000;}
+		.wrap .right{float: left;margin-left: 20px;}
+		.wrap .right div{ position:absolute;right:0;top:0; width: 50px; height: 50px; border:1px solid #333; }
+		.wrap .right div:last-child{margin-top: 70px;}
+		.wrap .right div:hover{width: 100px;height: 100px; background: rgba(0,0,0,0.5);}
+		.wrap .right div:first-child:hover{}
+		.wrap .right div:last-child:hover{margin-top: 70px;}
+		.wrap .left:hover{}
+		table{border-spacing: 20px;position: relative;}
+		table td{ width: 50px; height: 50px; border: 1px solid #000;}
+		table td:hover{transform: scale(1.5);position: absolute;right: 0;top;0;}
+	</style>
+</head>
+<body>
+<div class="wrap">
+	<div class="left"></div>
+	<div class="right">
+		<div></div>
+		<div></div>
+	</div>
+</div>
+
+<table>
+	<tr>
+		<td rowspan="2">div</td>
+		<td>div</td>
+	</tr>
+	<tr>
+		<td>div</td>
+	</tr>
+</table>
+
+<ol>
+	<li></li>
+</ol>
+</body>
+</html>
