@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	var text = "cat, bat, sat, fat";
+	var pattern1 = /.at/g;
+	var matches = pattern1.exec(text);
+	console.log(matches);
+	console.log(pattern1.lastIndex);
+
+	matches = pattern1.exec(text);
+	console.log(matches);
+	console.log(pattern1.lastIndex);
+
+	matches = pattern1.exec(text);
+	console.log(matches);
+	console.log(pattern1.lastIndex);
+
+	var text2 = 'mom and dad and baby';
+	var pattern2 = /mom( and dad( and baby)?)?/ig;
+	var matches2 = pattern2.exec(text2);
+	console.log(matches2);
+	console.log(pattern2.lastIndex);
+
+
+	var text3 = 'this has been a short summer';
+	var pattern3 = /(.)ho(..)/g;
+	if(pattern3.test(text3)){
+		console.log(RegExp.$1);
+		console.log(RegExp.$2);
+		console.log(RegExp.$3);
+	}
+
+	var str="Every man in the world! Every woman on earth!";
+
+	patt=/man/g;
+	str2=str.replace(patt,"person");
+	document.write(str2+"<br />");
+
+	patt=/(wo)?man/g;
+	patt.compile(patt);
+	str2=str.replace(patt,"person");
+	document.write(str2);
+
+	var str2="Visit W3school!"
+	console.log(str2.search(/W3School/))
+	console.log(str2.search(/w3School/i)) //忽略大小写
+</script>
+</body>
+</html>
