@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+
+//升幂降幂
+function add(num1,num2){
+	let r1,r2,num;
+
+	r1 = (''+num1).split('.')[1].length;
+	r2 = (''+num2).split('.')[1].length;
+
+	m = Math.pow(10,Math.max(r1,r2));
+
+	return (num1 * m + num2 * m) / m;
+}
+
+console.log(add(0.1,0.2));
+
+	function add2(num1,num2){
+		return new Number(num1.toPrecision()) + new Number(num2.toPrecision());
+	}
+	console.log(add2(0.1,0.5).toFixed(1));
+</script>
+</body>
+</html>

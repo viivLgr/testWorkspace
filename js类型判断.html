@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+console.log('typeof([]):' + typeof([]));  //object
+console.log('typeof({}):' + typeof({}));  //object
+console.log('typeof(NaN):' + typeof(NaN));  //number
+console.log('typeof(("abc")*1):' + typeof(('abc')*1));  //number
+console.log('typeof(("abc")+1):' + typeof(('abc')+1))  //string
+console.log('NaN==NaN:' + NaN==NaN); //false
+console.log('!NaN==!NaN:' + !NaN==!NaN) //false
+
+
+//自执行函数表达式 因为!+()这些符号的运算符是最高的，所以会先运行它们后面的函数
+;(function(){
+	console.log("123");
+})();
+!function(){
+	console.log("0123");
+}();
++function(){console.log('456')}();
+~function(){console.log('789')}();
+
+// var test = (function(a) {
+//     this.a = a;
+//     return function(b) {
+//         return this.a + b;
+//     }
+// } (function(a, b) {
+//     return a;
+// }(1, 2)));
+// //console.log(test) //是return的方法 function(b)
+// console.log(test(4)); 
+var a = 20
+var test2 = (function(a){
+	// this.a = a;
+	return function(b){
+		return this.a + b;
+	}
+})(1)
+console.log(test2(4));
+console.log(a)
+
+// var a3=5;
+// var test3 = function(a) {
+//     a = a3;
+//    console.log('inner'+a)
+// };
+// var p=test3(1);
+// console.log(a);
+
+// var a4=5;
+// var test4 = function(b) {
+//     a4=b;
+//    console.log('inner:'+a4);
+// };
+// var p=test4(1);
+// console.log('4:'+a4);
+
+var my_arr=[];
+for(var i=0;i<=5;i++){
+	my_arr.push(i*(i+1));
+}
+console.log(my_arr);
+var val=0;
+while(val=my_arr.pop()){
+	document.write(val+" ");
+}
+var test=function(){
+	var str1="";
+	var arr1=[];
+	var str2=str1;
+	var arr2=arr1;
+	console.log('arr1:'+arr1.length)
+	str2+="zhangsan";
+	
+	arr2.push({id:'id',name:'name'});
+	console.log('arr1:'+arr1.length)
+	with(document){
+		write(str1+'<br/>');//””
+		write(str2+'<br/>');// zhangsan 
+		write(arr1.length+'<br/>');//1
+		write(arr2.length+'<br/>');//1
+	}
+}
+test();
+
+console.log([].length);
+</script>
+</body>
+</html>

@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>富文本编辑框WYSIWYG</title>
+</head>
+<body>
+WYSIWYG(What you see is what you get) 所见即所得
+<iframe src="blank.htm" name="richedit" style="height: 100px; width: 100px;"></iframe>
+<div class="editable" id="richedit" contenteditable></div>
+<script type="text/javascript" src="js.EventUtil.js"></script>
+<script type="text/javascript">
+var div = document.getElementById('richedit');
+div.contenteditable = 'true';
 var EventUtil = {
 	addHandler: function(element,type,handler){
 		if(element.addEventListener){
@@ -63,3 +76,10 @@ var EventUtil = {
 		}
 	}
 }
+	EventUtil.addHandler(window,'load',function(){
+		frames['richedit'].document.designMode = 'on';
+	});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+function con(j){
+ 	console.log(j)
+}
+for(var i = 0; i < 5; i++){
+	var btn = document.createElement('button');
+	btn.appendChild(document.createTextNode('Button'+i));
+	btn.addEventListener('click',function(){
+		//console.log(parseInt(i.target.innerHTML.match(/\d/g)));
+		//con(i);
+	});
+	document.body.appendChild(btn);
+}
+
+var a = {},
+	b = {key:'b'},
+	c = {key:'c'},
+	d = {};
+
+a[b] = 123;
+a[c] = 456;
+a[d] = 789;
+
+console.log(a);
+console.log(a[b]);
+	
+</script>
+</body>
+</html>

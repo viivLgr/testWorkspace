@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+// 1.传统方法
+var arr1 = new Array(100);
+for(var i = 0; i < arr1.length; i++){
+	arr1[i] = i;
+}
+console.log(arr1);
+// 2.传统方法
+var arr2 = [];
+for(var i = 0; i < 100; i++){
+	arr2.push(i);
+}
+console.log(arr2);
+
+
+// 3.Object.keys
+var arr = Array.apply(null, {length:100});
+console.log(arr);
+console.log(Object.keys(arr));
+var arr3 = Object.keys(Array.apply(null,{length:100})).map(function(item){
+	return item;
+});
+console.log(arr3);
+
+console.log(Object.keys([1,2,3,'viiv']));
+
+//4.Array.from()
+var arr4 = Array.from({length: 5}, (v, i) => i);
+console.log(arr4);
+console.log(Array.from({length:100},(v,i) => i));
+
+//5.Array.keys()
+var arr5 = new Array(100).keys();
+console.log(arr5);
+console.log(Array.from(arr5));
+
+
+</script>
+</body>
+</html>

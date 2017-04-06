@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		input{}
+		select{display: none;}
+	</style>
+</head>
+<body>
+搜索<input type="text" name="search">
+<select multiple>
+	<option value="a" selected>a</option>
+	<option value="b">b</option>
+	<option value="c">c</option>
+	<option value="d">d</option>
+	<option value="e">e</option>
+</select>
+<script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('input')[0].focus();
+		$(document).click(function(){
+			$('select').hide();
+		})
+
+		$('input').on('click',function(e){
+			var oEvent = e || window.event;
+			e.stopPropagation();
+			$(this).next().show();
+		})
+		$('select').on('change',function(){
+			var selectVal = $(this).children('option:selected').text();
+			$('input').val(selectVal);
+			$(this).hide();
+		})
+	})
+	var selectbox = document.getElementsByTagName('select')[0];
+	selectbox.addEventListener('change',function(){
+		var selectIndex = selectbox.selectedIndex;
+		var selectOption = selectbox.options[selectIndex];
+		console.log('selectIndex:'+selectIndex+'\nselect text:'+selectOption.text +'\nselect value:'+selectOption.value);
+	})
+</script>
+</body>
+</html>

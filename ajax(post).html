@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<form action="" name="myForm" id="myForm" onsubmit="mysubmit()">
+	<label>username:<input type="text" name="username"></label>
+	<label>password:<input type="password" name="password"></label>
+	sex:<label><input type="radio" name="sex" value="male">男</label>
+	<label><input type="radio" name="sex" value="female">女</label>
+	<button type="submit">submit</button>
+</form>
+<script type="text/javascript">
+	function serialize(form){
+		var parts = [],
+		field = null,
+		len,
+		j,
+		optLen,
+		option,
+		optValue;
+		for(var i = 0; i < form.elements.length; i++){
+			field = form.elements[i];
+			switch(field.type){
+				case 'select-one':
+				case 'select-multiple':
+					if(field.name.length){
+						for(var j = 0; j < field.options.length;j++){
+							option = field.options[j];
+							if(option.selected){
+								optValue = '';
+								if(option.hasAttribute){
+									optValue = (option.hasAttribute(value) ? option.value : option.text);
+								}else{
+									optValue = (option.attributes['value'].specified ? option.value : option.text);
+								}
+								parts.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(optValue));
+							}
+						}
+					}
+					break;
+				case undefined:  //字段集
+				case 'file':     //文件输入
+				case 'submit':   //提交按钮
+				case 'reset':    //重置按钮
+				case 'button':   //自定义按钮
+					break;
+				case 'radio':
+				case 'checkbox':
+					if(!field.checked){
+						break;
+					}
+					// 执行默认操作
+				default:
+					// 不包含没有名字的表单字段
+					if(field.name.length){
+						parts.push(encodeURIComponent(field.name)+'='+encodeURIComponent(field.value));
+					}
+			}
+
+		}
+		return parts.join('&');
+	}
+
+	function getJSON(url){
+		var XHR;
+		if(window.XMLHttpRequest){
+			XHR = new XMLHttpRequest();
+		}else{
+			XHR = new ActiveXObject('Microsift.XMLHTTP');
+		}
+		XHR.onreadystatechange = function(){
+			if(XHR.readyState == 4 && XHR.status == 200){
+				var data = XHR.responseText;
+				console.log(data);
+			}
+		}
+		XHR.open('POST',url,true)
+		XHR.setResponseHeader('Content-Type','application/x-www-form-urlencoded');
+		var form = document.getElementById('myForm');
+		XHR.send(serialize(form));
+	}
+	function mysubmit(){
+		var form = document.getElementById('myForm');
+		console.log(serialize(form));
+	}
+getJSON('')
+</script>
+</body>
+</html>
