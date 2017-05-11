@@ -57,19 +57,7 @@ function previewImage(file, previewDiv, imgId, imgInputId) {
         if(div.childNodes[1]){
             div.removeChild(div.childNodes[1]);
         }
-        //移除idcard的错误提示
-        var idCardFront = div.parentNode.querySelector('#idcardfront-img-input-error');
-        if(idCardFront){
-            div.parentNode.removeChild(idCardFront);
-        }
-
-        //移除license的错误提示
-        var licenseImg = div.parentNode.querySelector('#license-img-input-error');
-        if(licenseImg){
-            div.parentNode.removeChild(licenseImg);
-        }
-
-
+        
         div.innerHTML = '<img id="' + imgId + '" onclick=$("#' + imgInputId + '").click()>';
         var img = document.getElementById(imgId);
         img.onload = function () {
@@ -94,7 +82,7 @@ function previewImage(file, previewDiv, imgId, imgInputId) {
         img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
         var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
         status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
-        div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>";
+        div.innerHTML = "<div id="+ previewDiv +" style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>";
     }
 }
 // 计算根据原有img标签宽高计算裁剪后的图片宽高
