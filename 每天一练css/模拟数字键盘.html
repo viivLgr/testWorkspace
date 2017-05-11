@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+	<style type="text/css">
+		.input{
+			width: 90%;
+			max-width: 320px;
+			margin: 20px auto;
+			border: 1px solid #ccc;
+			line-height: 34px;
+			height: 34px;
+			font-size: 16px;
+			text-indent: 10px;
+		}
+	</style>
+</head>
+<body>
+<div class="input keyboard">请输入金额</div>
+<script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+<script type="text/javascript">
+;(function($){
+	var keyboard = function(input,opt){
+		var option = {
+			divId: opt.divId ? option.divId : '_keyboard',
+			backgroundColor: opt.backgroundColor ? opt.backgroundColor : '#fff',
+			borderColor: opt.borderColor ? opt.borderColor : '#ccc',
+			color: opt.color ? opt.color : '#333',
+			fontSize: opt.fontSize ? opt.fontSize : '24px',
+			height: opt.height ? opt.height : '34px',
+			zIndex: opt.zIndex ? opt.zIndex : 1000,
+			width: opt.width ? opt.width : '100%'
+		};
+
+		var body = document.getElementsByTagName('body')[0];
+		body.style.width = '100%';
+		body.style.height = '100%';
+
+		input = document.querySelector(input);
+		var div = document.createElement('div');
+
+		div.id = option.divId;
+		div.style.position = 'absolute';
+		div.style.bottom = 0;
+		div.style.left = 0;
+		div.style.right = 0;
+		div.style.zIndex = option.zIndex;
+		div.style.width = option.width;
+		div.style.backgroundColor = option.backgroundColor;
+
+		var cssStr = '<style type="text/css">';
+		cssStr += '#' + option.divId + ' table{width: '+option.width+';border-collapse: collapse;}';
+		cssStr += '#' + option.divId + ' table tr td {width: 25%;border: 1px solid '+option.borderColor+';}';
+		cssStr += '#' + option.divId + ' table tr td button{display: table-cell;width: 100%;vertical-align: middle;height: '+option.height+';text-align: center;background-color: '+option.backgroundColor+';border: 0;font-size: '+option.fontSize+';outline: none;}'
+		cssStr += '</style>';
+
+		var tableStr = '<table>';
+		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del">⬅</button></td></tr>';
+		tableStr += '<tr><td><button data-id="4">4</button></td><td><button data-id="5">5</button></td><td><button data-id="6">6</button></td></tr>';
+		tableStr += '<tr><td><button data-id="7">7</button></td><td><button data-id="8">8</button></td><td><button data-id="9">9</button></td><td rowspan="2"><button data-id="confirm">确认</button></td></tr>';
+		tableStr += '<tr><td><button data-id="dot">.</button></td><td><button data-id="0">0</button></td><td><button data-id="clear">C</button></td></tr>';
+		tableStr += '</table>';
+
+		div.innerHTML = cssStr + tableStr;
+		var isshow = false;  //默认关闭
+		input.addEventListener('click',function(){
+			if(!isshow){ 
+				body.append(div);
+				isshow = !isshow;
+			}else{
+				body.removeChild(div);
+				isshow = !isshow;
+			}
+		},false);
+		var result = '';
+		div.addEventListener('click',function(e){
+			var id = e.target.dataset.id;
+			switch(id){
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case '0':
+				result += id + '';
+				input.innerHTML = result;
+				break;
+			case 'dot':
+				result += '.';
+				input.innerHTML = result;
+				break;
+			case 'del':
+				result = result.substring(0, result.length - 1);
+				if(result.length == 0){
+					input.innerHTML = '请输入金额';
+				}else{
+					input.innerHTML = result;
+				}
+				break;
+			case 'clear': 
+				result = '';
+				input.innerHTML = '请输入金额';
+				break;
+			case 'confirm': 
+				input.innerHTML = result;
+				alert('您输入的金额为：'+result);
+				console.log('您输入的金额为：'+result);
+				break;
+		}
+		},false)
+	}
+	$.keyboard = keyboard;
+})(jQuery)
+
+$(function(){
+	$.keyboard('.keyboard',{
+		backgroundColor: '#fff',
+		borderColor: '#ccc',
+		color: '#333',
+		fontSize: '24px',
+		height: '34px'
+	});
+})
+</script>
+</body>
+</html>

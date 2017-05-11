@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+div{ 
+	width: 200px;
+	height: 50px;
+	background-color: #15b9d4; 
+	margin: 20px auto;
+	box-sizing: border-box;
+}
+.box1{
+	border-left: 5px solid #000;
+}
+.box2{
+	box-shadow: inset 5px 0 0 0 #000;
+}
+.box3{
+	box-shadow: -5px 0 0 0 #000;
+}
+.box4{
+	background-image: linear-gradient(90deg,#000000 5px, transparent 5px);
+}
+.box5{
+	filter: drop-shadow(-5px 0 0 #000);
+}
+.box6{
+	position: relative;
+}
+.box6:after{
+	content: '';
+	width: 5px;
+	height: 50px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-color: #000;
+}
+	</style>
+</head>
+<body>
+<div class="box1"></div>
+<div class="box2"></div>
+<div class="box3"></div>
+<div class="box4"></div>
+<div class="box5"></div>
+<div class="box6"></div>
+</body>
+</html>
