@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>highchart</title>
+	<style type="text/css">
+		.clearfix{
+			zoom: 1;
+		}
+		.clearfix:before{
+			display: table;
+    		content: " ";
+		}
+		.clearfix:after {
+		    content: "";
+		    display: block;
+		    clear: both;
+		    height: 0;
+		}
+		.time-step{
+			list-style: none;
+			padding:0;
+			margin:0;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin: 0 auto;
+			width: 90%;
+    		max-width: 320px;
+		}
+		.time-step li{
+			list-style: none;
+			float: left;
+			width: 25%;
+			text-align: center;
+			box-sizing: border-box;
+			cursor: pointer;
+		}
+		.time-step li + li{
+			border-left: 1px solid #ccc;
+		}
+
+		.time-step li.active{
+			background-color: #6bd788;
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+<ul class="time-step clearfix">
+    <li class="active" data-step="today">日</li>
+    <li data-step="thisWeek">周</li>
+    <li data-step="thisMonth">月</li>
+    <li data-step="thisYear">年</li>
+</ul>
+<div id="container" style="width:100%;min-width:400px;height:400px"></div>
+<script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+<script type="text/javascript" src="highcharts.js"></script>
+<script src="mock.js"></script>
+<script type="text/javascript">
+$(function () {
+	// 对象
+	var chartData = Mock.mock({
+        'todayList|24': [{'number|0-199': 0}],
+        'thisWeekList|7': [{'number|0-199': 0}],
+        'thisMonthList|30': [{'number|0-199': 0}],
+        'thisYearList|12': [{'number|0-199': 0}]
+    })
+
+    // json格式
+    var chartJson = JSON.stringify(chartData, null, 2);
+    //默认显示当日交易
+    makeHighCharts('container',chartData.todayList,'时');
+	$('.time-step').on('click',function(e){
+		var step = e.target.dataset.step;
+		if(step == 'thisWeek'){
+			makeHighCharts('container',chartData.thisWeekList,'星期');
+		}else if(step == 'thisMonth'){
+			makeHighCharts('container',chartData.thisMonthList,'日');
+		}else if(step == 'thisYear'){
+			makeHighCharts('container',chartData.thisYearList,'月');
+		}else{
+			makeHighCharts('container',chartData.todayList,'时');
+		}
+	})
+
+	function makeHighCharts(el,dada,xTitle){
+		var dataIntArr = [];
+		dada.forEach(function(item){
+			dataIntArr.push(item.number);
+		})
+		// 	X轴刻度
+		var week = ['一','二','三','四','五','六','日'];
+		var xArray = Object.keys(Array.apply(null,{length:dataIntArr.length})).map(function(item,index){
+            if(dataIntArr.length == 7){   // 周的显示方法与其他不同
+                return week[index];
+            }
+            if(dataIntArr.length == 24){  // 小时不用加1
+                return +item;
+            }
+            return +item + 1;  // 月份和日期需要加1
+        });
+		var option = {
+			// Highcharts 配置
+		    chart : {
+		        renderTo: el, // 注意这里一定是 ID 选择器
+		        type: 'areaspline'
+		    },
+		    title: {
+		    	align:'left',
+	            text: '交易额'
+	        },
+	        subtitle: {
+	        	align:'left',
+	            text: '单位:元'
+	        },
+	        credits:{
+			    //enabled: true // 禁用版权信息
+			    text: 'PaPaPaY',             // 显示的文字
+			    //href: 'http://www.hcharts.cn',      // 链接地址
+			    position: {                         // 位置设置 
+			        align: 'left',
+			        x: 800,
+			        verticalAlign: 'bottom',
+			        y: -100
+			    },
+			    style: {                            // 样式设置
+			        cursor: 'pointer',
+			        color: '#FFB946',
+			        fontSize: '30px'
+			    }
+			},
+			xAxis: {
+				title: {
+	                text: '单位:' + xTitle
+	            },
+	            allowDecimals: false,  // 必须为整数
+	            categories: xArray
+	        },
+	        yAxis: {
+	            title: {
+	                text: ''
+	            },
+	            labels: {
+	                formatter: function () {
+	                    return this.value //+ '°';
+	                }
+	            }
+	        },
+	        tooltip: {
+	            crosshairs: true,
+	            shared: true,
+	            //backgroundColor: '#fff',   // 背景颜色
+	            borderColor: '#3ACA60',         // 边框颜色
+	            borderWidth: 0, //不要边框
+	            shared: true,
+	            useHTML: true,
+	            headerFormat: '<small>{point.key}' + xTitle + '</small><table>',
+	            pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+	            '<td style="text-align: right"><b>{point.y} 百元</b></td></tr>',
+	            footerFormat: '</table>',
+	            valueDecimals: 2 // 保留两位小数
+	        },
+	        plotOptions: {  //数据列配置
+	        	areaspline: {
+                    fillOpacity: .3  //阴影透明度
+                },
+	            spline: {
+	                marker: {
+	                    radius: 4,
+	                    lineColor: '#666666',
+	                    lineWidth: 1
+	                }
+	            }
+	        },
+	        series: [{
+	            name: '金额',
+	            color: '#3ACA60',
+	            // marker: {
+	            //     symbol: 'square'
+	            // },
+	            data: dataIntArr
+	        }]
+		}
+		if(dada.length == 7){ // 如果是周，调整title的顺序
+			option.tooltip.headerFormat = '<small>' + xTitle + '{point.key}</small><table>'
+		}
+		var charts = new Highcharts.Chart(option);
+	}
+});
+</script>
+</body>
+</html>
