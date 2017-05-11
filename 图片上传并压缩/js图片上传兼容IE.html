@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		.dis{
+			display: none;
+		}
+		.preview{
+			display: table-cell;
+			width: 300px;
+			height: 200px;
+			border: 1px solid #ccc;
+			background-color: #ccc;
+			border-radius: 5px;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.preview img{
+			border: 0;
+		}
+	</style>
+</head>
+<body>
+<div class="preview" id="preview"><img src="img.png" id="img" width="225" height="120" onclick="$('#imgInput').click();"></div>
+<input type="file" name="file" id="imgInput" onchange="previewImage(this,'preview','img','imgInput')" class="dis">
+
+<script type="text/javascript" src="jquery-3.2.0.min.js"></script>
+<script type="text/javascript">
+//图片上传预览    IE是用了滤镜。
+function previewImage(file, previewDiv, imgId, imgInputId) {
+    var MAXWIDTH = document.getElementById(imgId).width;
+    var MAXHEIGHT = document.getElementById(imgId).height;
+    var div = document.getElementById(previewDiv);
+    if (file.files && file.files[0]) {
+
+        // 格式不正确的错误提示
+        var error = document.createElement('p');
+        error.className = 'pic-error';
+
+        //如果不是图片格式，不往下执行
+        if (file.files[0].type !== 'image/jpeg' && file.files[0].type !== 'image/jpg' && file.files[0].type !== 'image/png' && file.files[0].type !== 'image/gif') {
+            error.innerHTML = '请上传图片格式的文件（jpeg/jpg/png/gif）';
+            div.appendChild(error);
+            return;
+        }
+
+        //限制6M以下的图片
+        if(file.size > 6*1024*1026){
+            error.innerHTML = '请上传大小在6M以下的图片';
+            div.appendChild(error);
+            return;
+        }
+
+        //移除错误提示
+        if(div.childNodes[1]){
+            div.removeChild(div.childNodes[1]);
+        }
+        //移除idcard的错误提示
+        var idCardFront = div.parentNode.querySelector('#idcardfront-img-input-error');
+        if(idCardFront){
+            div.parentNode.removeChild(idCardFront);
+        }
+
+        //移除license的错误提示
+        var licenseImg = div.parentNode.querySelector('#license-img-input-error');
+        if(licenseImg){
+            div.parentNode.removeChild(licenseImg);
+        }
+
+
+        div.innerHTML = '<img id="' + imgId + '" onclick=$("#' + imgInputId + '").click()>';
+        var img = document.getElementById(imgId);
+        img.onload = function () {
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            img.width = rect.width;
+            img.height = rect.height;
+            img.style.marginTop = rect.top + 'px';
+        }
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+            img.src = evt.target.result;
+        }
+        reader.readAsDataURL(file.files[0]);
+    }
+    else //兼容IE
+    {
+        var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+        file.select();
+        var src = document.selection.createRange().text;
+        div.innerHTML = '<img id=' + imgId + '>';
+        var img = document.getElementById(imgId);
+        img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+        var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+        status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+        div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>";
+    }
+}
+// 计算根据原有img标签宽高计算裁剪后的图片宽高
+function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+    var param = {top: 0, left: 0, width: width, height: height};
+    if (width > maxWidth || height > maxHeight) {
+        rateWidth = width / maxWidth;
+        rateHeight = height / maxHeight;
+
+        if (rateWidth > rateHeight) {
+            param.width = maxWidth;
+            param.height = Math.round(height / rateWidth);
+        } else {
+            param.width = Math.round(width / rateHeight);
+            param.height = maxHeight;
+        }
+    }
+    param.left = Math.round((maxWidth - param.width) / 2);
+    param.top = Math.round((maxHeight - param.height) / 2);
+    return param;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		#preview{width: 200px;height: 200px; background-repeat: no-repeat; background-size:contain; background-position: center; border: 1px solid #333; overflow: hidden;}
+		#preview img{width: 100%;}
+	</style>
+</head>
+<body>
+<!-- 这种方法兼容性不好且图片质量也不好 -->
+<div id="preview"></div>
+<div id="info"></div>
+<input type="file" name="file" id="fileinput">
+<p id="img_area"></p>
+<script type="text/javascript">
+
+var preview = document.getElementById('preview'),
+	info = document.getElementById('info'),
+	fileinput = document.getElementById('fileinput');
+
+if (typeof(FileReader) === 'undefined') {
+    result.innerHTML = "FileReader is not supported...";
+    fileinput.setAttribute('disabled', 'disabled');
+} else {
+    fileinput.addEventListener('change', readFile, false);
+}
+
+function readFile(){
+	preview.style.backgroundImage = '';
+	info.innerHTML = '';
+	if(!fileinput.value){
+		info.innerHTML = '您没有选择文件';
+		return;
+	}
+
+	var file = fileinput.files[0];
+	if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif'){
+		info.innerHTML = '请重新选择图片文件';
+		return;
+	}
+	info.innerHTML = '名称为：'+ file.name + '<br/>' +
+					'大小为：' + file.size + '<br/>' +
+					'类型为：' + file.type + '<br/>' +
+					'最后修改时间为：' + file.lastModifiedDate;
+	var reader = new FileReader();
+	reader.readAsDataURL(file);
+	reader.onload = function(e){
+		var data = e.target.result;
+
+		var img = new Image,
+            width = 320, //图片尺寸
+            quality = 0.8, //图片质量
+            canvas = document.createElement("canvas"),
+            drawer = canvas.getContext("2d");
+
+        img.src = data;
+
+        img.onload = function() {
+            canvas.width = width;
+            canvas.height = width * (img.height / img.width);
+            drawer.drawImage(img, 0, 0, canvas.width, canvas.height);
+            img.src = canvas.toDataURL("image/jpeg", quality);
+            // img_area.innerHTML = '<div class="sitetip">preview：</div><img src="' + img.src + '" alt=""/>';
+        }
+        console.log(img.size,img.src);
+        preview.innerHTML = '<img src="'+img.src+'">'
+		preview.style.backgroundImage = 'url(' + data + ')';
+	}
+}
+</script>
+</body>
+</html>
