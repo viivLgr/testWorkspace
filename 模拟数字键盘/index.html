@@ -51,7 +51,8 @@
 		div.style.width = option.width;
 		div.style.backgroundColor = option.backgroundColor;
 
-		var cssStr = '<style type="text/css">';
+		var cssStr = '<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">';
+		cssStr += '<style type="text/css">';
 		cssStr += '#' + option.divId + ' table{width: '+option.width+';border-collapse: collapse;}';
 		cssStr += '#' + option.divId + ' table tr td {width: 25%;border: 1px solid '+option.borderColor+';padding:0;}';
 		cssStr += '#' + option.divId + ' table tr td button{display: table-cell;width: 100%;vertical-align: middle;height: '+option.height+'px;text-align: center;background-color: '+option.backgroundColor+';border: 0;font-size: '+option.fontSize+'px;outline: none;}';
@@ -60,7 +61,7 @@
 		cssStr += '</style>';
 
 		var tableStr = '<table>';
-		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del" class="back">⬅</button></td></tr>';
+		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del" class="back"><i class="glyphicon glyphicon-arrow-left"></i></button></td></tr>';
 		tableStr += '<tr><td><button data-id="4">4</button></td><td><button data-id="5">5</button></td><td><button data-id="6">6</button></td></tr>';
 		tableStr += '<tr><td><button data-id="7">7</button></td><td><button data-id="8">8</button></td><td><button data-id="9">9</button></td><td rowspan="2"><button data-id="confirm">确认</button></td></tr>';
 		tableStr += '<tr><td><button data-id="dot">.</button></td><td><button data-id="0">0</button></td><td><button data-id="clear">C</button></td></tr>';
