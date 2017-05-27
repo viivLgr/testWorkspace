@@ -30,8 +30,7 @@
 			color: opt.color ? opt.color : '#333',
 			fontSize: opt.fontSize ? opt.fontSize : 24,
 			height: opt.height ? opt.height : 34,
-			zIndex: opt.zIndex ? opt.zIndex : 1000,
-			width: opt.width ? opt.width : '100%'
+			zIndex: opt.zIndex ? opt.zIndex : 1000
 		};
 
 		var body = document.getElementsByTagName('body')[0];
@@ -48,23 +47,22 @@
 		div.style.left = 0;
 		div.style.right = 0;
 		div.style.zIndex = option.zIndex;
-		div.style.width = option.width;
 		div.style.backgroundColor = option.backgroundColor;
 		div.style.padding = '0 0 5px 5px';
 		div.style.transition = 'all .3s ease-in-out';
 
-		var cssStr = '<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">';
-		cssStr += '<style type="text/css">';
+		var cssStr = '<style type="text/css">';
 		cssStr += '.keyboardActive{bottom:0px !important;}';
-		cssStr += '#' + option.divId + ' table{width: '+option.width+';border-collapse: collapse;}';
+		cssStr += '#' + option.divId + ' table{width: 100%;border-collapse: collapse;}';
 		cssStr += '#' + option.divId + ' table tr td {width: 25%;padding: 5px 5px 0 0;}';
 		cssStr += '#' + option.divId + ' table tr td button{display: table-cell;width: 100%;vertical-align: middle;height: '+option.height+'px;text-align: center;background-color: '+option.btnColor+';border: 0;font-size: '+option.fontSize+'px;outline: none;box-shadow: 0 1px 3px 1px rgba(0,0,0,0.2); border-radius: 5px;}';
 		cssStr += '#' + option.divId + ' table tr td button.back{height:'+ (option.height * 2) +'px;}';
 		cssStr += '#' + option.divId + ' table tr td button:active{box-shadow: inset 0 0 2px 1px rgba(0,0,0,0.1);}';
+		cssStr += '#' + option.divId + ' table tr td button .del{width:26px;height:20px;display:inline-block;background:url("delete.png") no-repeat left top;background-size: 100%;}';
 		cssStr += '</style>';
 
 		var tableStr = '<table>';
-		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del" class="back"><i class="glyphicon glyphicon-arrow-left"></i></button></td></tr>';
+		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del" class="back"><span class="del"></span></button></td></tr>';
 		tableStr += '<tr><td><button data-id="4">4</button></td><td><button data-id="5">5</button></td><td><button data-id="6">6</button></td></tr>';
 		tableStr += '<tr><td><button data-id="7">7</button></td><td><button data-id="8">8</button></td><td><button data-id="9">9</button></td><td rowspan="2"><button data-id="confirm" class="back">确认</button></td></tr>';
 		tableStr += '<tr><td><button data-id="dot">.</button></td><td><button data-id="0">0</button></td><td><button data-id="clear">C</button></td></tr>';
