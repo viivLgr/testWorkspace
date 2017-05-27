@@ -28,8 +28,8 @@
 			backgroundColor: opt.backgroundColor ? opt.backgroundColor : '#fff',
 			borderColor: opt.borderColor ? opt.borderColor : '#ccc',
 			color: opt.color ? opt.color : '#333',
-			fontSize: opt.fontSize ? opt.fontSize : '24px',
-			height: opt.height ? opt.height : '34px',
+			fontSize: opt.fontSize ? opt.fontSize : 24,
+			height: opt.height ? opt.height : 34,
 			zIndex: opt.zIndex ? opt.zIndex : 1000,
 			width: opt.width ? opt.width : '100%'
 		};
@@ -37,6 +37,7 @@
 		var body = document.getElementsByTagName('body')[0];
 		body.style.width = '100%';
 		body.style.height = '100%';
+		body.style.margin = 0;
 
 		input = document.querySelector(input);
 		var div = document.createElement('div');
@@ -52,67 +53,76 @@
 
 		var cssStr = '<style type="text/css">';
 		cssStr += '#' + option.divId + ' table{width: '+option.width+';border-collapse: collapse;}';
-		cssStr += '#' + option.divId + ' table tr td {width: 25%;border: 1px solid '+option.borderColor+';}';
-		cssStr += '#' + option.divId + ' table tr td button{display: table-cell;width: 100%;vertical-align: middle;height: '+option.height+';text-align: center;background-color: '+option.backgroundColor+';border: 0;font-size: '+option.fontSize+';outline: none;}'
+		cssStr += '#' + option.divId + ' table tr td {width: 25%;border: 1px solid '+option.borderColor+';padding:0;}';
+		cssStr += '#' + option.divId + ' table tr td button{display: table-cell;width: 100%;vertical-align: middle;height: '+option.height+'px;text-align: center;background-color: '+option.backgroundColor+';border: 0;font-size: '+option.fontSize+'px;outline: none;}';
+		cssStr += '#' + option.divId + ' table tr td button.back{height:'+ (option.height * 2) +'px;}';
+		cssStr += '#' + option.divId + ' table tr td button:active{box-shadow: inset 0 0 10px 3px rgba(0,0,0,0.1);}';
 		cssStr += '</style>';
 
 		var tableStr = '<table>';
-		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del">⬅</button></td></tr>';
+		tableStr += '<tr><td><button data-id="1">1</button></td><td><button data-id="2">2</button></td><td><button data-id="3">3</button></td><td rowspan="2"><button data-id="del" class="back">⬅</button></td></tr>';
 		tableStr += '<tr><td><button data-id="4">4</button></td><td><button data-id="5">5</button></td><td><button data-id="6">6</button></td></tr>';
 		tableStr += '<tr><td><button data-id="7">7</button></td><td><button data-id="8">8</button></td><td><button data-id="9">9</button></td><td rowspan="2"><button data-id="confirm">确认</button></td></tr>';
 		tableStr += '<tr><td><button data-id="dot">.</button></td><td><button data-id="0">0</button></td><td><button data-id="clear">C</button></td></tr>';
 		tableStr += '</table>';
 
 		div.innerHTML = cssStr + tableStr;
+
+		var audio = document.createElement('AUDIO');
+		audio.src = 'click.wav';
+
 		var isshow = false;  //默认关闭
 		input.addEventListener('click',function(){
 			if(!isshow){ 
 				body.append(div);
+				body.append(audio);
 				isshow = !isshow;
 			}else{
 				body.removeChild(div);
+				body.removeChild(audio);
 				isshow = !isshow;
 			}
 		},false);
 		var result = '';
-		div.addEventListener('click',function(e){
+		div.addEventListener('touchstart',function(e){
 			var id = e.target.dataset.id;
+			audio.play();
 			switch(id){
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-			case '0':
-				result += id + '';
-				input.innerHTML = result;
-				break;
-			case 'dot':
-				result += '.';
-				input.innerHTML = result;
-				break;
-			case 'del':
-				result = result.substring(0, result.length - 1);
-				if(result.length == 0){
-					input.innerHTML = '请输入金额';
-				}else{
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+				case '0':
+					result += id + '';
 					input.innerHTML = result;
-				}
-				break;
-			case 'clear': 
-				result = '';
-				input.innerHTML = '请输入金额';
-				break;
-			case 'confirm': 
-				input.innerHTML = result;
-				alert('您输入的金额为：'+result);
-				console.log('您输入的金额为：'+result);
-				break;
-		}
+					break;
+				case 'dot':
+					result += '.';
+					input.innerHTML = result;
+					break;
+				case 'del':
+					result = result.substring(0, result.length - 1);
+					if(result.length == 0){
+						input.innerHTML = '请输入金额';
+					}else{
+						input.innerHTML = result;
+					}
+					break;
+				case 'clear': 
+					result = '';
+					input.innerHTML = '请输入金额';
+					break;
+				case 'confirm': 
+					input.innerHTML = result;
+					alert('您输入的金额为：'+result);
+					console.log('您输入的金额为：'+result);
+					break;
+			}
 		},false)
 	}
 	$.keyboard = keyboard;
@@ -123,8 +133,8 @@ $(function(){
 		backgroundColor: '#fff',
 		borderColor: '#ccc',
 		color: '#333',
-		fontSize: '24px',
-		height: '34px'
+		fontSize: 24,
+		height: 40
 	});
 })
 </script>
