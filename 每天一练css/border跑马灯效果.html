@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		div{
+			margin: 10px auto;
+		    width: 200px;
+		    height: 200px;
+		}
+		.div1{
+			/* border的dotted属性绘制点状边框 */
+		    border: 20px dotted #f40;
+		    background-color: #26c73a;
+		    /* 使用background-clip的border-box属性设置border点状剩余的颜色 */
+		    background-clip: border-box;
+		    /* 用内阴影制作白色content背景 */
+		    box-shadow: inset 200px 0 0 #fff;
+		}
+		.div2{
+			border: 20px dotted #f40;
+			background-color: #26c73a;
+			position: relative;
+		}
+		.div2:after{
+			content: '';
+			width: 200px;
+			height: 200px;
+			background-color: #fff;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.div3{
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 20px dotted #f40;
+			position: relative;
+		}
+		.div3:after{
+			content: '';
+			position: absolute;
+			left: 0;
+			top:0;
+			right: 0;
+			bottom:0;
+			background: #26c73a;
+		}
+	</style>
+</head>
+<body>
+<div class="div1"></div>
+<div class="div2"></div>
+<div class="div3"></div>
+</body>
+</html>
