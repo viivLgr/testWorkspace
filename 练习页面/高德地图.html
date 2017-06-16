@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no"> 
+	<style type="text/css">
+		#container{
+			width: 500px;
+			height: 400px;
+		}
+	</style>
+</head>
+<body>
+<div id="container"></div>  
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=4179db716561efc9772de93fdbda42ba"></script> 
+<script type="text/javascript">
+if (window.navigator.geolocation) {
+    var options = {
+        enableHighAccuracy: true,
+    };
+    window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError, options);
+} else {
+    console.info("浏览器不支持html5来获取地理位置信息");
+}
+
+function handleSuccess(position){
+    // 获取到当前位置经纬度  本例中是chrome浏览器取到的是google地图中的经纬度
+    var lng = position.coords.longitude;
+    var lat = position.coords.latitude;
+    console.log('原始：'+lng+','+lat);
+    AMap.convertFrom([lng,lat], 'gps',
+		function(status,result){
+			console.log('status:'+status)
+			console.log(result.locations[0])
+			lng = result.locations[0].lng;
+			lat = result.locations[0].lat;
+		})
+    // 声明地图
+	var map = new AMap.Map('container',{
+	    zoom: 10,
+	    center: [lng,lat]//经度值在前，纬度值在后 new AMap.LngLat(116.39,39.9)
+	});
+
+	// 标记
+	var marker = new AMap.Marker({
+	    position: [lng, lat],//marker所在的位置
+	    map:map//创建时直接赋予map属性
+	});
+
+	
+
+	// 插件
+	// AMap.plugin(['AMap.ToolBar','AMap.AdvancedInfoWindow'],function(){
+	//     //创建并添加工具条控件
+	//     var toolbar = new AMap.ToolBar();
+	//     map.addControl(toolbar);
+	//     //创建高级信息窗体并在指定位置打开
+	//     var infowindow = new AMap.AdvancedInfoWindow({
+	//       // content: '<div class="info-title">高德地图</div><div class="info-content">'+
+	//       //       '<img src="http://webapi.amap.com/images/amap.jpg">'+
+	//       //       '高德是中国领先的数字地图内容、导航和位置服务解决方案提供商。<br>'+
+	//       //       '<a target="_blank" href="http://mobile.amap.com/">点击下载高德地图</a></div>',
+	//       offset: new AMap.Pixel(0, -30)
+	//     });
+	//     infowindow.open(map,[lng, lat]);
+	// })
+}
+
+function handleError(error){
+	var errMsg = '';
+	switch(error.code) {
+        case error.PERMISSION_DENIED:
+          errMsg = "用户拒绝访问位置信息.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errMsg = "位置信息不可用.";
+          break;
+        case error.TIMEOUT:
+          errMsg = "获取位置信息超时.";
+          break;
+        case error.UNKNOWN_ERROR:
+          errMsg = "未知错误.";
+          break;
+    }
+    console.error(errMsg);
+}
+
+	
+
+</script>
+</body>
+</html>
