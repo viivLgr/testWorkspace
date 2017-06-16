@@ -19,12 +19,37 @@
 			overflow: hidden;
 			white-space: nowrap;
 		}
+		.table-wrap{
+			width: 100%;
+			display: table;
+			table-layout: fixed;
+		}
+		.table-wrap .table-td{
+			width: 50px;
+			display: table-cell;
+		}
+		.table-wrap .table-dd{
+			display: table-cell;
+		}
+		.table-wrap .table-dd div{
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	</style>
 </head>
 <body>
 <div class="flex-wrap">
 	<div class="tit">标题</div>
 	<div class="txt">2很长很长很长很长很长很长很长很长很长很长很长很长2</div>
+	<div class="tit">标题</div>
+</div>
+<div class="table-wrap">
+	<div class="table-td">标题</div>
+	<div class="table-dd">
+		<div>2很长很长很长很长很长很长很长很长很长很长很长很长2</div>
+	</div>
+	<div class="table-td">标题</div>
 </div>
 </body>
 </html>
